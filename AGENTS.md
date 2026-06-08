@@ -1,55 +1,35 @@
+# Frontend conventions
 
-You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
+## Angular 21 specifics
 
-## TypeScript Best Practices
+- Standalone components only (no NgModules). Do NOT set `standalone: true` — it's the default.
+- Use `input()` / `output()` functions, not `@Input()` / `@Output()` decorators.
+- Use `inject()` function, not constructor injection.
+- Use `@if` / `@for` / `@switch` native control flow, not `*ngIf` / `*ngFor`.
+- Use `class` / `style` bindings, not `ngClass` / `ngStyle`.
+- Use `computed()` for derived state. Do NOT use `mutate` on signals; use `update` or `set`.
+- Set `changeDetection: ChangeDetectionStrategy.OnPush` on components.
+- Use `styleUrl` (singular), not `styleUrls` (plural).
+- Reactive forms over template-driven.
+- `NgOptimizedImage` for static images (not for inline base64).
+- `@HostBinding` / `@HostListener` forbidden; use the `host` object in `@Component` instead.
+- Services: `providedIn: 'root'`, single-responsibility.
+- Use `provideBrowserGlobalErrorListeners()` in app config (Angular 21+).
 
-- Use strict type checking
-- Prefer type inference when the type is obvious
-- Avoid the `any` type; use `unknown` when type is uncertain
+## Project structure
 
-## Angular Best Practices
+```
+src/app/
+  components/   — each: .html + .ts only
+  services/     — frontend logic + backend communication
+  models/       — data interfaces (request/response shapes)
+```
 
-- Always use standalone components over NgModules
-- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
-- Use signals for state management
-- Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
-- Use `NgOptimizedImage` for all static images.
-  - `NgOptimizedImage` does not work for inline base64 images.
+## Visual toolkit
 
-## Accessibility Requirements
+- Bootstrap via CDN (not npm).
 
-- It MUST pass all AXE checks.
-- It MUST follow all WCAG AA minimums, including focus management, color contrast, and ARIA attributes.
+## Testing & quality
 
-### Components
-
-- Keep components small and focused on a single responsibility
-- Use `input()` and `output()` functions instead of decorators
-- Use `computed()` for derived state
-- Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
-- Prefer inline templates for small components
-- Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
-- When using external templates/styles, use paths relative to the component TS file.
-
-## State Management
-
-- Use signals for local component state
-- Use `computed()` for derived state
-- Keep state transformations pure and predictable
-- Do NOT use `mutate` on signals, use `update` or `set` instead
-
-## Templates
-
-- Keep templates simple and avoid complex logic
-- Use native control flow (`@if`, `@for`, `@switch`) instead of `*ngIf`, `*ngFor`, `*ngSwitch`
-- Use the async pipe to handle observables
-- Do not assume globals like (`new Date()`) are available.
-
-## Services
-
-- Design services around a single responsibility
-- Use the `providedIn: 'root'` option for singleton services
-- Use the `inject()` function instead of constructor injection
+- Unit tests: Vitest (`ng test`). Test files end with `.spec.ts`.
+- Must pass AXE checks and WCAG AA (focus management, color contrast, ARIA).

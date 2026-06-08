@@ -1,0 +1,13 @@
+services:
+  - type: static
+    name: ejercicio2-frontend
+    region: oregon
+    buildCommand: sed "s|__BACKEND_API_URL__|$BACKEND_API_URL|g" src/assets/env.template.js > src/assets/env.js && npm run build
+    staticPublishPath: dist/frontend/browser
+    envVars:
+      - key: BACKEND_API_URL
+        sync: false
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY

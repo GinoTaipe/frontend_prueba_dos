@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Personas</h2>
+    <a routerLink="/personas/nueva" class="btn btn-primary">Nueva Persona</a>
+  </div>
+
+  @if (loading()) {
+    <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="alert alert-danger">{{ error() }}</div>
+  }
+
+  @if (!loading() && !error()) {
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Doc. Identidad</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of personas(); track p.docIdentidad) {
+            <tr>
+              <td>{{ p.docIdentidad }}</td>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.apellido }}</td>
+              <td>{{ p.edad }}</td>
+              <td>{{ p.email }}</td>
+              <td>
+                <a [routerLink]="['/personas', p.docIdentidad, 'editar']" class="btn btn-sm btn-warning me-1">
+                  Editar
+                </a>
+                <a [routerLink]="['/personas', p.docIdentidad, 'eliminar']" class="btn btn-sm btn-danger">
+                  Eliminar
+                </a>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center">No hay personas registradas</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
