@@ -44,10 +44,11 @@ The `frontend/` folder history is now in its own repository.
 
 ## How the API URL injection works
 
-1. `env.template.js` contains `window.__env__ = { backendApiUrl: '__BACKEND_API_URL__' }`
-2. During build, `sed` replaces `__BACKEND_API_URL__` with the actual env var value and outputs `src/assets/env.js`
-3. `index.html` loads `/assets/env.js` before Angular bootstraps
-4. `persona.service.ts` reads `window.__env__.backendApiUrl` at runtime
+1. `public/env.template.js` contains `window.__env__ = { backendApiUrl: '__BACKEND_API_URL__' }`
+2. During build, `sed` replaces `__BACKEND_API_URL__` with the actual env var value and outputs `public/env.js`
+3. `public/` is copied verbatim to the output root by Angular's builder, making `env.js` available at `/env.js`
+4. `index.html` loads `/env.js` before Angular bootstraps
+5. `persona.service.ts` reads `window.__env__.backendApiUrl` at runtime
 
 ## SPA Routing
 
